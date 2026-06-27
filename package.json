@@ -1,0 +1,23 @@
+{
+  "name": "worldcup",
+  "version": "1.0.0",
+  "description": "Calculateur de probabilités pour la Coupe du Monde de Football",
+  "main": "index.js",
+  "scripts": {
+    "fetch:all": "node scripts/fetch-all.js",
+    "fetch:teams": "node scripts/fetch-teams.js",
+    "fetch:matches": "node scripts/fetch-matches.js",
+    "fetch:standings": "node scripts/fetch-standings.js",
+    "fetch:rankings": "node scripts/fetch-rankings.js",
+    "fetch:stats": "node scripts/fetch-stats.js",
+    "fetch:h2h": "node scripts/fetch-h2h.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.18.0",
+    "dotenv": "^17.4.2",
+    "fs-extra": "^11.3.5"
+  }
+}
