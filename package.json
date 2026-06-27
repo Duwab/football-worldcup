@@ -10,13 +10,16 @@
     "fetch:standings": "node scripts/fetch-standings.js",
     "fetch:rankings": "node scripts/fetch-rankings.js",
     "fetch:stats": "node scripts/fetch-stats.js",
-    "fetch:h2h": "node scripts/fetch-h2h.js"
+    "fetch:h2h": "node scripts/fetch-h2h.js",
+    "fetch:historical": "node scripts/fetch-historical.js",
+    "compare": "node scripts/compare.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.18.0",
+    "csv-parse": "^7.0.0",
     "dotenv": "^17.4.2",
     "fs-extra": "^11.3.5"
   }

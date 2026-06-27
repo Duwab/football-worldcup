@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch"
+      "WebSearch",
+      "Bash(npm install *)",
+      "Bash(node scripts/fetch-historical.js)",
+      "Bash(node -e ' *)",
+      "Bash(node scripts/compare.js FRA ARG)",
+      "Bash(node scripts/compare.js BRA GER --limit 10)",
+      "Bash(node scripts/compare.js MAR CPV --all)"
     ]
   }
 }

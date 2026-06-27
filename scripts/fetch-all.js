@@ -10,6 +10,7 @@ const { fetchStandings } = require('./fetch-standings');
 const { fetchRankings } = require('./fetch-rankings');
 const { buildStats } = require('./fetch-stats');
 const { fetchH2H } = require('./fetch-h2h');
+const { fetchHistorical } = require('./fetch-historical');
 const fse = require('fs-extra');
 const path = require('path');
 
@@ -49,6 +50,9 @@ async function run() {
 
   // 7. H2H par groupe (pas d'appel API)
   await fetchH2H();
+
+  // 8. Historique long terme depuis GitHub (pas d'appel API football-data)
+  await fetchHistorical();
 
   const elapsed = ((Date.now() - start) / 1000).toFixed(1);
   console.log(`\n🎉  Collecte terminée en ${elapsed}s`);
