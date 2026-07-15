@@ -349,6 +349,49 @@ function buildH2HSection(h2h, teamA, teamB, options) {
 
 // ─── Section équipe individuelle ──────────────────────────────────────────────
 
+function buildGoalDistributionTable(displayed, teamName) {
+  const byGoals = {}; // goalsScored → { wins, draws, losses, matches[] }
+
+  for (const m of displayed) {
+    const isHome = m.home === teamName;
+    const gFor   = isHome ? m.homeScore : m.awayScore;
+    const gAgt   = isHome ? m.awayScore : m.homeScore;
+    const opp    = isHome ? m.away : m.home;
+
+    if (!byGoals[gFor]) byGoals[gFor] = { wins: 0, draws: 0, losses: 0, matches: [] };
+    const g = byGoals[gFor];
+
+    // Nuls hors t.a.b. : un match avec tir aux buts compte comme V ou D
+    let result;
+    if (m.shootout) {
+      result = m.shootout.winner === teamName ? 'W' : 'L';
+    } else {
+      result = gFor > gAgt ? 'W' : gFor === gAgt ? 'D' : 'L';
+    }
+
+    if      (result === 'W') g.wins++;
+    else if (result === 'D') g.draws++;
+    else                     g.losses++;
+
+    const icon = result === 'W' ? '✅' : result === 'D' ? '🟡' : '❌';
+    const pso  = m.shootout ? ' t.a.b.' : '';
+    g.matches.push(`${icon} ${opp} (${gFor}-${gAgt}${pso})`);
+  }
+
+  const rows = Object.keys(byGoals).map(Number).sort((a, b) => a - b);
+  if (!rows.length) return '';
+
+  const lines = [];
+  lines.push('### Distribution par buts marqués\n');
+  lines.push('| Buts | ✅ V | 🟡 N | ❌ D | Matchs |');
+  lines.push('|:---:|---:|---:|---:|:---|');
+  for (const g of rows) {
+    const { wins, draws, losses, matches } = byGoals[g];
+    lines.push(`| **${g}** | ${wins} | ${draws} | ${losses} | ${matches.join(', ')} |`);
+  }
+  return lines.join('\n') + '\n';
+}
+
 function buildTeamSection(meta, hist, rank, options) {
   const { limit, showAll } = options;
   const teamName = hist.team.datasetName;
@@ -399,6 +442,8 @@ function buildTeamSection(meta, hist, rank, options) {
   lines.push(`| **Moy. buts marqués**     | ${s.total.avgGoalsFor}  | ${cmp.avgGoalsFor}  | ${wc.avgGoalsFor}  | ${con.avgGoalsFor}  |`);
   lines.push(`| **Moy. buts encaissés**   | ${s.total.avgGoalsAgainst}  | ${cmp.avgGoalsAgainst}  | ${wc.avgGoalsAgainst}  | ${con.avgGoalsAgainst}  |`);
   lines.push('');
+
+  lines.push(buildGoalDistributionTable(displayed, teamName));
 
   // Forme récente (toujours les 10 derniers, indépendant du filtre)
   const form = hist.recentForm.slice(0, 10);
